@@ -1,13 +1,29 @@
 \section{DeepInf: Social influence prediction}
 \subsection{Introduction}
-\paragraph{}Social influence is everywhere around us, not only in our daily physical life but also on the virtual Web space.
-The term social influence typically refers to \textbf{the phenomenon that a person’s emotions, opinions, or behaviors are affected by others.}. 
-Deepinf focus on the prediction of user-level social influence. It aims to predict the action status of a user given the action.
-An example for this problem is discussed in the Section 1.
-\paragraph{} Deepinf is a deep learning based framework to represent both influence dynamics and network structures into a latent space. The following 
-steps are done to predict the action status of a user $\mathcal{v}$, the following 
-\subsection{Problem formulation}
+\paragraph{} Deepinf focus on the prediction of user-level social influence. It aims to \textbf{predict the action status of a user given the action}.
+It is a deep learning based framework to represent both influence dynamics and network structures into a latent space and 
+tries to minimize the negative likelihood that was defined in the section 1.
 \subsection{Model framework}
+\subsubsection{Sampling Near Neighbour}
+\paragraph{} Give a user $v$, a r-ego network $\mathcal{G}_v^r$ is extracted using breadth-first search (BFS) starting from 
+user $v$. However, $\mathcal{G}_v^r$ may have different size due to the small world property in the social network. Since most
+deep learning models expects fixed size data, the graph $\mathcal{G}_v^r$ can be sampled to fixed size.
+\paragraph{} For sampling a fixed size graph \textbf{random walk the restart} (RWR) was used. RWR algorithm is defined as
+following steps.
+\begin{itemize}
+    \item Start random walks from either the ego user $v$ or one of her active neighbors randomly.
+    \item The random walk iteratively travels to its neighborhood with the probability that is 
+    proportional to the weight of each edge.
+    \item At each step, the walk is assigned a probability to return to the starting node, that is, 
+    either the ego user $v$ or one of $v$’s active neighbors.
+    \item Run the algorithm until a fixed number of vertices denoted by $\hat{\Gamma_v^r}$ with $\hat{|\Gamma_v^r|}$=n. 
+\end{itemize}
+\paragraph{} After running this algorithm, a sub-graph $\hat{\mathcal{G}_v^r}$ and denote $\hat{S}_v^t$=
+\{ $s_u^t :u \in \hat{\Gamma_v^r}$ \} be the action statuses of $v$'s sampled neighbours. Therefore we re-define the optimization
+objective in section 1 as:
+\begin{equation}
+    \mathcal{L}(\theta) = -\sum_{i=1}^N \log(P_{\theta}(s_{v_i}^{t_i+\Delta t}|\hat{\mathcal{G}_{v_i}^{t}},s_{v_i}^{t_i}))
+\end{equation}
 \subsubsection{Embedded layer}
 \subsubsection{Instane Normalization}
 \subsubsection{Input Layer}
