@@ -78,5 +78,73 @@ for each embedding dimension d = 1...$\mathcal{D}$, where
 \paragraph{} Input later constructs feature vector for each user. Along with the output from the instance Normalization,
 input layer adds two binary variable. The first variabe indicates user's action status and second variable indicates whether
 the user is the ego user.
+
 \subsubsection{GCN}
-\section{Evaluation Metrics}
+
+\paragraph{} Graph Convolutional Network (GCN) was discussed in detail in the previous chapter. Given the node features 
+matrix $\mathcal{H} \in \mathcal{R}^{n \times F}$, for $n$ nodes in the sub-graph, GCN tries to extract neighbourhood 
+information for all the nodes in the subgraph and projects into lower dimensional space.
+
+\subsubsection{Output layer and loss function}
+
+\paragraph{} The output layer produces a two dimension representation for each users and comparing the representation for
+the ego user with the ground truth value the negative log-likelihood (Eq 3.1) is minimized.
+
+\section{Experimentation}
+
+\subsection{Dataset}
+
+\subsubsection{Digg}
+\begin{itemize}
+    \item Digg is a \textbf{news aggregator which allows people to vote web content, a.k.a, story, up or down}.
+    \item The dataset contains data about stories promoted to Digg’s front page over a period of a month in 2009.
+    \item For each story, it contains the list of all Digg users who have voted for the story up to the 
+    time of data collection and the time stamp of each vote.
+\end{itemize}
+
+\subsubsection{Data preparation}
+\begin{itemize}
+    \item As dataset is imbalanced (negative instances are more than positive instances), the data is sampled to achieve a balanced distribution.
+    \item Each subgraph for the user $v$, has fixed neighbors (50).
+\end{itemize}
+
+\subsection{Evaluation metrics}
+\paragraph{} The model was trained for 1000 epochs and prediction performance like AUC, Precision, Recall, F1-Score were calculated.
+\begin{center}
+    \begin{tabular}{ |c|c|c|c|c|c| } 
+     \hline
+     \textbf{Data} & \textbf{Model} & \textbf{AUC} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\ 
+     \hline
+     Digg & DeepInf+GCN (Our's) & 0.82 & 0.58 & 0.634 & 0.604\\ 
+     Digg & DeepInf+GCN (Author's) & 0.84 & 0.587 & 0.676 & 0.6288\\ 
+     \hline
+    \end{tabular}
+    \end{center}
+\subsubsection{Precision Recall plots}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth,height=4cm]{tex/img/precision_plot.png}
+                \caption{Precision plot}
+        \end{subfigure}%
+        \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth,height=4cm]{tex/img/recall_plot.png}
+                \caption{Recall plot}
+       \end{subfigure}%
+    \end{figure}
+\subsubsection{Loss f1-score plots}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{tex/img/loss_plot.png}
+                \caption{Loss plot}
+        \end{subfigure}%
+        \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{tex/img/f1_plot.png}
+                \caption{F1-score plot}
+       \end{subfigure}%
+    \end{figure}
+
+
