@@ -1,15 +1,21 @@
-\section{DeepInf: Social influence prediction}
-\subsection{Introduction}
+\chapter{DeepInf: Social influence prediction}
+
+
+\section{Introduction}
 \paragraph{} Deepinf focus on the prediction of user-level social influence. It aims to \textbf{predict the action status of a user given the action}.
 It is a deep learning based framework to represent both influence dynamics and network structures into a latent space and 
 tries to minimize the negative likelihood that was defined in the section 1.
-\subsection{Model framework}
-\subsubsection{Sampling Near Neighbour}
+
+
+\section{Model framework}
+\subsection{Sampling Near Neighbour}
+
 \paragraph{} Give a user $v$, a r-ego network $\mathcal{G}_v^r$ is extracted using breadth-first search (BFS) starting from 
 user $v$. However, $\mathcal{G}_v^r$ may have different size due to the small world property in the social network. Since most
 deep learning models expects fixed size data, the graph $\mathcal{G}_v^r$ can be sampled to fixed size.
 \paragraph{} For sampling a fixed size graph \textbf{random walk the restart} (RWR) was used. RWR algorithm is defined as
 following steps.
+
 \begin{itemize}
     \item Start random walks from either the ego user $v$ or one of her active neighbors randomly.
     \item The random walk iteratively travels to its neighborhood with the probability that is 
@@ -18,38 +24,59 @@ following steps.
     either the ego user $v$ or one of $v$’s active neighbors.
     \item Run the algorithm until a fixed number of vertices denoted by $\hat{\Gamma_v^r}$ with $\hat{|\Gamma_v^r|}$=n. 
 \end{itemize}
+
 \paragraph{} After running this algorithm, a sub-graph $\hat{\mathcal{G}_v^r}$ and denote $\hat{S}_v^t$=
 \{ $s_u^t :u \in \hat{\Gamma_v^r}$ \} be the action statuses of $v$'s sampled neighbours. Therefore we re-define the optimization
 objective in section 1 as:
+
 \begin{equation}
     \mathcal{L}(\theta) = -\sum_{i=1}^N \log(P_{\theta}(s_{v_i}^{t_i+\Delta t}|\hat{\mathcal{G}_{v_i}^{t}},s_{v_i}^{t_i}))
 \end{equation}
-\subsubsection{Neural Network}
+
+
+\subsection{Neural Network}
 \paragraph{} With the retreived $\hat{\mathcal{G}_{v_i}^{t}}$ and $\hat{S}_v^t$ for each user, an effective
 neural network model to incorporate both the structural properties in $\hat{\mathcal{G}_{v_i}^{t}}$ and action statuses in 
 $\hat{S}_v^t$.
+
 \begin{figure}
     \includegraphics[width=12cm,height=4cm]{tex/img/framework.png}
 \end{figure}
+
 \paragraph{} Deepinf neural network model consist of network embedding layer, instance normalization layer, input layer
 and GCN layer as described in the above diagram.
+
+
 \subsubsection{Embedded layer}
+
 \paragraph{} Network embedding technique encode network structural properties into low dimensional matrix $\mathbf{X} \in
 \mathcal{R}^{\mathcal{D} \times |V|}$. Deepinf uses Deepwalk algorithm for mapping each users into $\mathcal{R}^{\mathcal{D}}$
 space.
+
+
 \subsubsection{Instance Normalization}
+
 \paragraph{} Instance normalization can remove instance-specific mean and variance, which encourages the downstream model 
 to focus on users’ relative positions in latent embedding space rather than their absolute positions. It also prevents 
 overfitting.
+
 \paragraph{} Let $x_u$ be the low dimension representation for the user $u \in \hat{\Gamma_v^r}$, the instance normalized
 vector $y_u$ is obtained by
+
 \begin{equation}
     y_{ud} = \frac{x_{ud}-\mu_{ud}}{\sqrt{\sigma_d^2+\epsilon}}
 \end{equation}
-for each embedding dimension d = 1...$\mathcal{D}$, where
+
+for each embedding dimension d = 1...$\mathcal{D}$, where 
 \begin{equation}
     \mu_d = \frac{1}{n}\sum_{u \in \hat{\Gamma_v^r}}x_{ud},\ \sigma_d^2 = \frac{1}{n}\sum_{u \in \hat{\Gamma_v^r}}(x_{ud}-\mu_{ud})^2
 \end{equation}
+
+
 \subsubsection{Input Layer}
+
+\paragraph{} Input later constructs feature vector for each user. Along with the output from the instance Normalization,
+input layer adds two binary variable. The first variabe indicates user's action status and second variable indicates whether
+the user is the ego user.
 \subsubsection{GCN}
-\subsection{Evaluation Metrics}
+\section{Evaluation Metrics}
