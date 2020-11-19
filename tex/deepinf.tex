@@ -10,9 +10,9 @@ tries to minimize the negative likelihood that was defined in the section 1.
 \section{Model framework}
 \subsection{Sampling Near Neighbour}
 
-\paragraph{} Give a user $v$, a r-ego network $\mathcal{G}_v^r$ is extracted using breadth-first search (BFS) starting from 
-user $v$. However, $\mathcal{G}_v^r$ may have different size due to the small world property in the social network. Since most
-deep learning models expects fixed size data, the graph $\mathcal{G}_v^r$ can be sampled to fixed size.
+\paragraph{} Give a user $v$, a r-ego network $G_v^r$ is extracted using breadth-first search (BFS) starting from 
+user $v$. However, $G_v^r$ may have different size due to the small world property in the social network. Since most
+deep learning models expects fixed size data, the graph $G_v^r$ can be sampled to fixed size.
 \paragraph{} For sampling a fixed size graph \textbf{random walk the restart} (RWR) was used. RWR algorithm is defined as
 following steps.
 
@@ -25,7 +25,7 @@ following steps.
     \item Run the algorithm until a fixed number of vertices denoted by $\hat{\Gamma_v^r}$ with $\hat{|\Gamma_v^r|}$=n. 
 \end{itemize}
 
-\paragraph{} After running this algorithm, a sub-graph $\hat{\mathcal{G}_v^r}$ and denote $\hat{S}_v^t$=
+\paragraph{} After running this algorithm, a sub-graph $\hat{G_v^r}$ and denote $\hat{S}_v^t$=
 \{ $s_u^t :u \in \hat{\Gamma_v^r}$ \} be the action statuses of $v$'s sampled neighbours. Therefore we re-define the optimization
 objective in section 1 as:
 
@@ -35,8 +35,8 @@ objective in section 1 as:
 
 
 \subsection{Neural Network}
-\paragraph{} With the retreived $\hat{\mathcal{G}_{v_i}^{t}}$ and $\hat{S}_v^t$ for each user, an effective
-neural network model to incorporate both the structural properties in $\hat{\mathcal{G}_{v_i}^{t}}$ and action statuses in 
+\paragraph{} With the retreived $\hat{G_{v_i}^{t}}$ and $\hat{S}_v^t$ for each user, an effective
+neural network model to incorporate both the structural properties in $\hat{G_{v_i}^{t}}$ and action statuses in 
 $\hat{S}_v^t$.
 
 \begin{figure}
@@ -50,7 +50,7 @@ and GCN layer as described in the above diagram.
 \subsubsection{Embedded layer}
 
 \paragraph{} Network embedding technique encode network structural properties into low dimensional matrix $\mathbf{X} \in
-\mathcal{R}^{\mathcal{D} \times |V|}$. Deepinf uses Deepwalk algorithm for mapping each users into $\mathcal{R}^{\mathcal{D}}$
+\mathbf{R}^{\mathcal{D} \times |V|}$. Deepinf uses Deepwalk algorithm for mapping each users into $\mathbf{R}^{\mathcal{D}}$
 space.
 
 
@@ -82,13 +82,13 @@ the user is the ego user.
 \subsubsection{GCN}
 
 \paragraph{} Graph Convolutional Network (GCN) was discussed in detail in the previous chapter. Given the node features 
-matrix $\mathcal{H} \in \mathcal{R}^{n \times F}$, for $n$ nodes in the sub-graph, GCN tries to extract neighbourhood 
+matrix $\mathcal{H} \in \mathbf{R}^{n \times F}$, for $n$ nodes in the sub-graph, GCN tries to extract neighbourhood 
 information for all the nodes in the subgraph and projects into lower dimensional space.
 
 \subsubsection{Output layer and loss function}
 
 \paragraph{} The output layer produces a two dimension representation for each users and comparing the representation for
-the ego user with the ground truth value the negative log-likelihood (Eq 3.1) is minimized.
+the ego user with the ground truth value the negative log-likelihood (Eq 6.1) is minimized.
 
 \section{Experimentation}
 
