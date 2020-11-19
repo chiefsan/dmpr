@@ -1,0 +1,13 @@
+\chapter{Graph Convolutional Neural Network}
+\section{Definition}
+\paragraph{} Graph Convolutional Network (GCN) is a semi-supervised learning algorithm for graph-structured data. This is
+refered convolutional, because filter parameters are typically shared over all locations in the graph.
+\paragraph{} GCN model goal is to learn a function of signals/features on a graph $\mathcal{G}=(\mathcal{V},\mathcal{E})$
+which takes input:
+\begin{itemize}
+    \item A feature description $x_i$ for every node $i$,summarized in a $\mathcal{N} \times \mathcal{D}$.
+    \item A representative description of the graph structure in matrix form; typically in the form of an adjacency matrix $\mathcal{A}$.
+\end{itemize}
+\paragraph{} It produces node level output $\mathcal{Z}$ (an $\mathcal{N} \times \mathcal{F}$), where $\mathcal{F}$ is the 
+number of output features per-node.
+\section{GCN architecture}
