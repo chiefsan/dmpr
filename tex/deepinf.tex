@@ -6,6 +6,16 @@
 It is a deep learning based framework to represent both influence dynamics and network structures into a latent space and 
 tries to minimize the negative likelihood that was defined in the section 1.
 
+\section{Problem Formulation}
+Let $G=(V,E)$ be a static social network, where $V$ denotes the set of users and $E \subseteq V \times V$ denotes the set of undirected relationships. For a user $v$, its \textbf{r-neighbors} are defined as $\Gamma^r_v = \{u: d(u,v) \le r\}$ where $d(u,v)$ is the number of hops (shortest path distance) between $u$ and $v$ in the network $G$. The \textbf{r-ego network} of user $v$ is the subnetwork induced by $\Gamma^r_v$, denoted by $G^r_v$.
+
+Users in social networks perform \textbf{social actions}, such as retweet. At each timestamp $t$, we observe a binary action status of user $u$, $s_u^t \in \{0,1\}$, where $s_u^t=1$ indicates user $u$ has performed this action before or on the timestamp t, and $s_u^t=0$ indicates that the user has not performed this action yet. Such an action log can be available from many social networks.
+
+Given the above definitions, \textbf{social influence locality} can be stated as: users' social decisions and actions are influenced only by their near neighbors within the network, while external sources are assumed to be not present.
+
+\textbf{Problem 1.} \textbf{Social Influence Locality.} Social influence locality models the probability of $v$'s action status conditioned on his r-ego network $G^r_v$ and the action states of her r-neighbors. More formally, given $G^r_v$ and $S^t_v=\{u\in\Gamma_v^r \\ \{v\{\}$, social influence locality aims to quantify the activation probability of $v$ after a given time interval $\Delta t$: $$P\big(s_v^{t+\Delta t} \vert G^r_v, S^t_v\big)$$
+
+We formulate social influence prediction as a binary graph classification problem which can be solved by minimizing the following negative log likelihood objective w.r.t. model parameters $\Theta$: $$L(\Theta) = - \sum_{i=1}^N \log \big( P_\Theta \big( s_{v_i}^{t_i+\Delta t} \vert G_{v_i}^r, S_{v_i}^{t_i}\big)\big)$$
 
 \section{Model framework}
 \subsection{Sampling Near Neighbour}
