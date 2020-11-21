@@ -7,7 +7,7 @@ It is a deep learning based framework to represent both influence dynamics and n
 tries to minimize the negative likelihood that was defined in the section 1.
 
 \section{Problem Formulation}
-Let $G=(V,E)$ be a static social network, where $V$ denotes the set of users and $E \subseteq V \times V$ denotes the set of undirected relationships. For a user $v$, its \textbf{r-neighbors} are defined as $\Gamma^r_v = \{u: d(u,v) \le r\}$ where $d(u,v)$ is the number of hops (shortest path distance) between $u$ and $v$ in the network $G$. The \textbf{r-ego network} of user $v$ is the subnetwork induced by $\Gamma^r_v$, denoted by $G^r_v$.
+Let $G=(V,E)$ be a static social network, where $V$ denotes the set of users and $E \subseteq V \times V$ denotes the set of undirected relationships. For a user $v$, its \textbf{r-neighbors} are defined as $\Gamma^r_v = \{u: d(u,v) \le r\}$ where $d(u,v)$ is the number of hops (shortest path distance) between $u$ and $v$ in the network $G$. The \textbf{r-ego network} of user $v$ is the sub-network induced by $\Gamma^r_v$, denoted by $G^r_v$.
 
 Users in social networks perform \textbf{social actions}, such as retweet. At each timestamp $t$, we observe a binary action status of user $u$, $s_u^t \in \{0,1\}$, where $s_u^t=1$ indicates user $u$ has performed this action before or on the timestamp t, and $s_u^t=0$ indicates that the user has not performed this action yet. Such an action log can be available from many social networks.
 
@@ -18,7 +18,7 @@ Given the above definitions, \textbf{social influence locality} can be stated as
 We formulate social influence prediction as a binary graph classification problem which can be solved by minimizing the following negative log likelihood objective w.r.t. model parameters $\Theta$: $$L(\Theta) = - \sum_{i=1}^N \log \big( P_\Theta \big( s_{v_i}^{t_i+\Delta t} \vert G_{v_i}^r, S_{v_i}^{t_i}\big)\big)$$
 
 \section{Model framework}
-\subsection{Sampling Near Neighbour}
+\subsection{Sampling Near Neighbor}
 
 \paragraph{} Give a user $v$, a r-ego network $G_v^r$ is extracted using breadth-first search (BFS) starting from 
 user $v$. However, $G_v^r$ may have different size due to the small world property in the social network. Since most
@@ -36,7 +36,7 @@ following steps.
 \end{itemize}
 
 \paragraph{} After running this algorithm, a sub-graph $\hat{G_v^r}$ and denote $\hat{S}_v^t$=
-\{ $s_u^t :u \in \hat{\Gamma_v^r}$ \} be the action statuses of $v$'s sampled neighbours. Therefore we re-define the optimization
+\{ $s_u^t :u \in \hat{\Gamma_v^r}$ \} be the action statuses of $v$'s sampled neighbors. Therefore we re-define the optimization
 objective in section 1 as:
 
 \begin{equation}
@@ -92,8 +92,8 @@ the user is the ego user.
 \subsubsection{GCN}
 
 \paragraph{} Graph Convolutional Network (GCN) was discussed in detail in the previous chapter. Given the node features 
-matrix $\mathcal{H} \in \mathbf{R}^{n \times F}$, for $n$ nodes in the sub-graph, GCN tries to extract neighbourhood 
-information for all the nodes in the subgraph and projects into lower dimensional space.
+matrix $\mathcal{H} \in \mathbf{R}^{n \times F}$, for $n$ nodes in the sub-graph, GCN tries to extract neighborhood 
+information for all the nodes in the sub-graph and projects into lower dimensional space.
 
 \subsubsection{Output layer and loss function}
 
@@ -106,7 +106,7 @@ the ego user with the ground truth value the negative log-likelihood (Eq 6.1) is
 
 \subsubsection{Digg}
 \begin{itemize}
-    \item Digg is a \textbf{news aggregator which allows people to vote web content, a.k.a, story, up or down}.
+    \item Digg is a \textbf{news aggregator which allows people to vote web content, a.k.a. story, up or down}.
     \item The dataset contains data about stories promoted to Digg’s front page over a period of a month in 2009.
     \item For each story, it contains the list of all Digg users who have voted for the story up to the 
     time of data collection and the time stamp of each vote.
@@ -115,7 +115,7 @@ the ego user with the ground truth value the negative log-likelihood (Eq 6.1) is
 \subsubsection{Data preparation}
 \begin{itemize}
     \item As dataset is imbalanced (negative instances are more than positive instances), the data is sampled to achieve a balanced distribution.
-    \item Each subgraph for the user $v$, has fixed neighbors (50).
+    \item Each sub-graph for the user $v$, has fixed neighbors (50).
 \end{itemize}
 
 \subsection{Evaluation metrics}
@@ -130,7 +130,7 @@ the ego user with the ground truth value the negative log-likelihood (Eq 6.1) is
      \hline
     \end{tabular}
     \end{center}
-\subsubsection{Precision Recall plots}
+\subsubsection{Plots}
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.5\textwidth}
@@ -143,7 +143,6 @@ the ego user with the ground truth value the negative log-likelihood (Eq 6.1) is
                 \caption{Recall plot}
        \end{subfigure}%
     \end{figure}
-\subsubsection{Loss f1-score plots}
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.5\textwidth}
